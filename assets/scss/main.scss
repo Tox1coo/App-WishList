@@ -1,0 +1,19 @@
+@use "fonts";
+@use "variables" as *;
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  font-family: $font-family-primary;
+  color: $text-color;
+  font-size: 62.5%;
+}
+
+*,*::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  border:none;
+}
