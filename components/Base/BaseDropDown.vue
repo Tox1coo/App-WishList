@@ -1,26 +1,36 @@
 <script setup lang="ts">
 import {Listbox, ListboxButton, ListboxOption, ListboxOptions} from "@headlessui/vue";
-import type {PropType} from "vue";
+import type {PropType, Ref} from "vue";
 
 const {
+    id,
     options,
-    selected
+    selectedItem
 } = defineProps<
     {
-        options: PropType<SelectedItem[]>,
-        selected: PropType<SelectedItem | null>,
+        id: string;
+        options: SelectedItem[],
+        selectedItem: SelectedItem | null,
     }
 >();
 
+const selectedValue: Ref<SelectedItem | null> = ref(selectedItem)
+
+const emit = defineEmits(["updateFilter"]);
+
 const getNameSelected = computed(() => {
-    return selected ? selected.name : "Выберите";
+    return selectedValue.value ? selectedValue.value.name : "Выберите";
 })
 
+const updateFilter = (value: SelectedItem) => {
+    console.log(value)
+    emit("updateFilter", {newValue: value, filterId:id,})
+}
 </script>
 
 <template>
     <div class="">
-        <Listbox >
+        <Listbox v-model="selectedValue"  @update:modelValue="updateFilter">
             <div class="relative mt-1">
                 <ListboxButton
                     class="relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm"
@@ -50,6 +60,7 @@ const getNameSelected = computed(() => {
                             v-for="option in options"
                             :key="option.name"
                             :value="option"
+
                             as="template"
                         >
                             <li

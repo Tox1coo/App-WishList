@@ -7,7 +7,7 @@ export const useStoreSwitcherData = defineStore("switcherDataStore", () => {
 
     const initializeFromLocalStorage = () => {
         if(localStorage.getItem("switcherData")) {
-            switcherData.value = JSON.parse(localStorage.getItem("switcherData")) as boolean;
+            switcherData.value = JSON.parse(localStorage.getItem("switcherData") as string) as boolean;
         }
     }
 
